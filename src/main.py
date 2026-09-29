@@ -8,8 +8,9 @@ from pydantic import BaseModel
 
 from .callback import send_result
 from .equal_validator import validate_equal
-from .runner import run
+from .runner import init_sandbox, run
 
+init_sandbox()
 app = FastAPI()
 _started_at = time.time()
 
