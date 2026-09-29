@@ -8,6 +8,10 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# C modules that give raw memory access (ctypes, test/internal APIs): readable only by root, so the
+# sandboxed solution (unprivileged uid) cannot load them. The service itself does not use them.
+RUN find /usr/local/lib/python3*/lib-dynload \( -name '_ctypes*' -o -name '_test*' -o -name '_xx*' \) -exec chmod 0700 {} +
+
 COPY src/ ./src/
 
 ENV NODE_ENV=prod
